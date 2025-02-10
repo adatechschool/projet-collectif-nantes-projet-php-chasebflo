@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require 'databaseconnect.php';
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

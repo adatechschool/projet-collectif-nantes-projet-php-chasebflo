@@ -81,3 +81,32 @@
 </body>
 </html>
 
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+try {
+    
+    include 'databaseconnect.php';
+    include 'hash_password.php';
+    // Variables à insérer
+    $nom = $_POST["nom"];
+    $email = $_POST["email"];
+    $passwords = $_POST["mot_de_passe"]; // Hash du mot de passe
+    $roles = $_POST["role"];
+
+    // Préparation et exécution de la requête
+    $stmt = $pdo->prepare("INSERT INTO benevoles (nom, email, mot_de_passe, role) VALUES (:nom, :email, :passwords, :roles)");
+    
+    $stmt->execute([
+        ':nom' => $nom,
+        ':email' => $email,
+        ':passwords' => password_hash($passwords, PASSWORD_DEFAULT),
+        ':roles' => $roles
+    ]);
+
+    echo "Bénévole ajouté avec succès";
+    
+} catch(PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+}}
+?>
