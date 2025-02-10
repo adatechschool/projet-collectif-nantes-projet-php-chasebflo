@@ -1,3 +1,30 @@
+<?php
+require 'databaseconnect.php';
+
+try {
+    $stmt = $pdo->query("
+        SELECT b.id, b.nom, b.email, b.role
+        FROM benevoles b
+        ORDER BY b.nom DESC
+    ");
+
+    $query = $pdo->prepare("SELECT * FROM benevoles ");
+    $query->execute();
+
+    $collectes = $stmt->fetchAll();
+    $admin = $query->fetch(PDO::FETCH_ASSOC);
+    $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
+
+} catch (PDOException $e) {
+    echo "Erreur de base de données : " . $e->getMessage();
+    exit;
+}
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -54,7 +81,7 @@
                     <td class="py-3 px-4">email@example.com</td>
                     <td class="py-3 px-4">Admin</td>
                     <td class="py-3 px-4 flex space-x-2">
-                        <a href="#"
+                        <a href="volunteer_edit.php"
                            class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                             ✏️ Modifier
                         </a>
