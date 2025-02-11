@@ -11,7 +11,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $id = $_GET['id'];
 
 // Récupérer les informations de la collecte
-$stmt = $pdo->prepare("SELECT * FROM collectes WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM benevoles WHERE id = ?");
 $stmt->execute([$id]);
 $collecte = $stmt->fetch();
 
@@ -29,7 +29,8 @@ $benevoles = $stmt_benevoles->fetchAll();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nom = $_POST["nom"];
     $email = $_POST["email"];
-    $role = $_POST["role"]; // Récupérer l'ID du bénévole sélectionné
+    $role = $_POST["role"]; 
+    $benevole_id = $_POST["benevole"];// Récupérer l'ID du bénévole sélectionné
 
     $stmt = $pdo->prepare("UPDATE benevoles SET nom = ?, email = ?, role = ? WHERE id = ?");
     $stmt->execute([$nom, $email, $role, $id]);
