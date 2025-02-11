@@ -5,19 +5,13 @@ try {
     $stmt = $pdo->query("
         SELECT b.id, b.nom, b.email, b.role
         FROM benevoles b
-        ORDER BY b.nom DESC
+        ORDER BY b.nom ASC
     ");
 
     $query = $pdo->prepare("SELECT * FROM benevoles ");
     $query->execute();
-// echo "query".$query;
-$benevoles = $stmt->fetchAll();
-    // foreach($benevoles as $key => $benevole) {
-    // echo $benevole['nom'];}
+    $benevoles = $stmt->fetchAll();
     $admin = $query->fetch(PDO::FETCH_ASSOC);
-    // foreach($admin as $key => $admins) {
-    // echo $admins.' a la clé '.$key.'<br />';}
-// echo "admin".[$admin];
     $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
 
 } catch (PDOException $e) {
