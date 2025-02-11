@@ -10,9 +10,14 @@ try {
 
     $query = $pdo->prepare("SELECT * FROM benevoles ");
     $query->execute();
-
-    $collectes = $stmt->fetchAll();
+// echo "query".$query;
+$benevoles = $stmt->fetchAll();
+    // foreach($benevoles as $key => $benevole) {
+    // echo $benevole['nom'];}
     $admin = $query->fetch(PDO::FETCH_ASSOC);
+    // foreach($admin as $key => $admins) {
+    // echo $admins.' a la clé '.$key.'<br />';}
+// echo "admin".[$admin];
     $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
 
 } catch (PDOException $e) {
@@ -77,10 +82,18 @@ error_reporting(E_ALL);
                 </thead>
                 <tbody class="divide-y divide-gray-300">
                 <tr class="hover:bg-gray-100 transition duration-200">
-                    <td class="py-3 px-4">Nom du bénévole</td>
-                    <td class="py-3 px-4">email@example.com</td>
-                    <td class="py-3 px-4">Admin</td>
-                    <td class="py-3 px-4 flex space-x-2">
+                <?php
+// Vérification s'il y a des données
+if ($benevoles) {
+    // Boucle sur chaque bénévole
+    foreach ($benevoles as $benevole) {
+        ?>
+        <tr class="hover:bg-gray-100 transition duration-200">
+            <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['nom']); ?></td>
+            <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['email']); ?></td>
+            <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['role']); ?></td>
+        
+        <td class="py-3 px-4 flex space-x-2">
                         <a href="volunteer_edit.php"
                            class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                             ✏️ Modifier
@@ -90,6 +103,14 @@ error_reporting(E_ALL);
                             🗑️ Supprimer
                         </a>
                     </td>
+                    </tr>
+        <?php
+    }
+}
+// Fermeture du curseur
+$stmt->closeCursor();
+?>                
+                    
                 </tr>
                 </tbody>
             </table>
