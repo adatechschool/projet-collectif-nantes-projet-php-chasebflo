@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require 'databaseconnect.php';
 
 try {
     $stmt = $pdo->query("

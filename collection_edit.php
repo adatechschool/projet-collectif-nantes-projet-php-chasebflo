@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require 'databaseconnect.php';
 
 // Vérifier si un ID de collecte est fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
