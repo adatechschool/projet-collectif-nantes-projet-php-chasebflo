@@ -3,19 +3,18 @@ require 'databaseconnect.php';
 
 try {
     $stmt = $pdo->query("
-        SELECT c.id, c.date_collecte, c.lieu, b.nom
+        SELECT c.id, c.date_collecte, c.lieu, b.nom,
+               d.type_dechet, d.quantite_kg
         FROM collectes c
         LEFT JOIN benevoles b ON c.id_benevole = b.id
+        LEFT JOIN dechets_collectes d ON c.id = d.id_collecte
         ORDER BY c.date_collecte DESC
     ");
-
     $query = $pdo->prepare("SELECT nom FROM benevoles WHERE role = 'admin' LIMIT 1");
     $query->execute();
-
-    $collectes = $stmt->fetchAll();
     $admin = $query->fetch(PDO::FETCH_ASSOC);
     $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
-
+    $collectes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erreur de base de données : " . $e->getMessage();
     exit;
@@ -105,9 +104,9 @@ error_reporting(E_ALL);
                     <tr class="hover:bg-gray-100 transition duration-200">
                         <td class="py-3 px-4"><?= date('d/m/Y', strtotime($collecte['date_collecte'])) ?></td>
                         <td class="py-3 px-4"><?= htmlspecialchars($collecte['lieu']) ?></td>
-                        <td class="py-3 px-4">
-                            <?= $collecte['nom'] ? htmlspecialchars($collecte['nom']) : 'Aucun bénévole' ?>
-                        </td>
+                        <td class="py-3 px-4"><?= $collecte['nom'] ? htmlspecialchars($collecte['nom']) : 'Aucun bénévole' ?></td>
+                        <td class="py-3 px-4"><?= $collecte['type_dechet'] ?></td>
+                        <td class="py-3 px-4"><?= floatval($collecte['quantite_kg']) ?></td>                        
                         <td class="py-3 px-4 flex space-x-2">
                             <a href="collection_edit.php?id=<?= $collecte['id'] ?>" class="bg-cyan-200 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                                 ✏️ Modifier
