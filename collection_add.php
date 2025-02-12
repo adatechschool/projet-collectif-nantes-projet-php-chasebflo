@@ -134,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </select>
                 </div>
 
+                  <!-- Type de déchets -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium">Type de déchets</label>
                     <select name="type_dechet"
@@ -148,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <option value="dechets sanitaires">Déchets sanitaires</option>
                     </select>
                 </div>
-
+                   <!-- Quantité en kg -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Quantité en kg :</label>
                     <input type="float" name="quantite_kg" required
