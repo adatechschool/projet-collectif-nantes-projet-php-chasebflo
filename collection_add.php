@@ -1,29 +1,71 @@
 <?php
 require 'databaseconnect.php';
 
+try {
+    // Requête pour récupérer les collectes avec leurs déchets et bénévoles associés
+    $stmt = $pdo->query("
+        SELECT c.id, c.date_collecte, c.lieu, b.nom,
+               d.type_dechet, d.quantite_kg
+        FROM collectes c
+        LEFT JOIN benevoles b ON c.id_benevole = b.id
+        LEFT JOIN dechets_collectes d ON c.id = d.id_collecte
+        ORDER BY c.date_collecte DESC
+    ");
+    
+    // Requête pour la liste des bénévoles
+    $stmt_benevoles = $pdo->query("SELECT id, nom FROM benevoles ORDER BY nom");
+    $benevoles = $stmt_benevoles->fetchAll();
+
+} catch (PDOException $e) {
+    echo "Erreur de base de données : " . $e->getMessage();
+    exit;
+}
+
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+?>
 
-// Récupérer la liste des bénévoles
-$stmt_benevoles = $pdo->query("SELECT id, nom FROM benevoles ORDER BY nom");
-$stmt_benevoles->execute();
-$benevoles = $stmt_benevoles->fetchAll();
-
+<?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $date = $_POST["date"];
     $lieu = $_POST["lieu"];
-    $benevole_id = $_POST["benevole"];  // ID du bénévole choisi, modifié ici pour correspondre au formulaire
-
-    // Insérer la collecte avec le bénévole sélectionné
-    $stmt = $pdo->prepare("INSERT INTO collectes (date_collecte, lieu, id_benevole) VALUES (?, ?, ?)");
-    if (!$stmt->execute([$date, $lieu, $benevole_id])) {
-        die('Erreur lors de l\'insertion dans la base de données.');
+    $benevole_id = $_POST["benevole"];
+    $quantite_kg = $_POST["quantite_kg"];
+    $type_dechet = $_POST["type_dechet"];
+    
+    try {
+        // Commencer une transaction
+        $pdo->beginTransaction();
+        
+        // Insérer la collecte
+        $stmt_collecte = $pdo->prepare("INSERT INTO collectes (date_collecte, lieu, id_benevole) VALUES (?, ?, ?)");
+        $stmt_collecte->execute([$date, $lieu, $benevole_id]);
+        
+        // Récupérer l'ID de la collecte insérée
+        $collecte_id = $pdo->lastInsertId();
+        
+        // Insérer les informations de déchets
+        $stmt_dechets = $pdo->prepare("INSERT INTO dechets_collectes (id_collecte, type_dechet, quantite_kg) VALUES (?, ?, ?)");
+        $stmt_dechets->execute([$collecte_id, $type_dechet, $quantite_kg]);
+        
+        // Valider la transaction
+        $pdo->commit();
+        
+    } catch (PDOException $e) {
+        // Annuler la transaction en cas d'erreur
+        $pdo->rollBack();
+        echo "Erreur de base de données : " . $e->getMessage();
+        exit;
     }
 
     header("Location: collection_list.php");
     exit;
 }
 ?>
+
+<!-- Reste du code HTML -->
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -94,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium">Type de déchets</label>
-                    <select name="dechets"
+                    <select name="type_dechet"
                             class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="papier">Papier</option>
                         <option value="metal">Métal</option>
