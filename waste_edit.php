@@ -19,9 +19,9 @@ if (!$dechet) {
 }
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $type = $_POST["type"];
+    $type = $_POST["type_dechet"];
     $quantite_kg = $_POST["quantite_kg"];
-    $stmt = $pdo->prepare("UPDATE dechets_collectes SET type = ?, quantite_kg = ? WHERE id = ?");
+    $stmt = $pdo->prepare("UPDATE dechets_collectes SET type_dechet = ?, quantite_kg = ? WHERE id = ?");
     $stmt->execute([$type, $quantite_kg, $id]);
     header("Location: waste_list.php");
     exit;
