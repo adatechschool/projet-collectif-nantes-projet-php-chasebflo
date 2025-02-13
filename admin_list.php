@@ -32,6 +32,11 @@
                 Déconnexion
             </button>
         </div>
+                            <div class="mt-6">
+    <a href="logout.php" class="block w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md text-center">
+        Déconnexion
+    </a>
+</div>
     </div>
 
     <!-- Contenu principal -->

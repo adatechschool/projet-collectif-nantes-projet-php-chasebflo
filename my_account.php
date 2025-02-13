@@ -35,16 +35,17 @@ $stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
             <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i
                         class="fas fa-cogs mr-3"></i> Mon compte</a></li>
 
-            <div class="mt-6">
-                <button onclick="window.location.href='logout.php'" class="w-full bg-red-700 hover:bg-red-500 text-white py-2 rounded-lg shadow-md">
-                    Déconnexion
-                </button>
-            </div>
-        </div>
-        <!-- Contenu principal -->
-        <div class="flex-1 p-8 overflow-y-auto">
-            <!-- Titre -->
-            <h1 class="text-4xl font-bold text-green-950 mb-6">Paramètres</h1>
+                        <div class="mt-6">
+    <a href="logout.php" class="block w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md text-center">
+        Déconnexion
+    </a>
+</div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="flex-1 p-8 overflow-y-auto">
+        <!-- Titre -->
+        <h1 class="text-4xl font-bold text-blue-800 mb-6">Paramètres</h1>
 
             <!-- Message de succès ou d'erreur -->
             <div class="text-green-950 text-center mb-4" id="success-message" style="display:none;">
