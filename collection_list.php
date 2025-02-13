@@ -10,7 +10,7 @@ try {
         LEFT JOIN dechets_collectes d ON c.id = d.id_collecte
         ORDER BY c.date_collecte DESC
     ");
-    $query = $pdo->prepare("SELECT nom FROM benevoles WHERE role = 'admin' LIMIT 1");
+    $query = $pdo->prepare("SELECT nom FROM benevoles WHERE role = 'admin'");
     $query->execute();
     $admin = $query->fetch(PDO::FETCH_ASSOC);
     $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
