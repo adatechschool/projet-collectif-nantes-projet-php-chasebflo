@@ -33,7 +33,7 @@ error_reporting(E_ALL);
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-green-100 text-gray-900">
 <div class="flex h-screen">
     <!-- Barre de navigation -->
     <div class="bg-green-950 text-white w-64 p-6 list-none">
@@ -74,15 +74,15 @@ error_reporting(E_ALL);
                     <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-300">
-                <tr class="hover:bg-gray-100 transition duration-200">
+                <tbody class="divide-y divide-green-200">
+                <tr class="hover:bg-green-200 transition duration-200">
                 <?php
 // Vérification s'il y a des données
 if ($benevoles) {
     // Boucle sur chaque bénévole
     foreach ($benevoles as $benevole) {
         ?>
-        <tr class="hover:bg-gray-100 transition duration-200">
+        <tr class="hover:bg-green-100 transition duration-200">
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['nom']); ?></td>
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['email']); ?></td>
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['role']); ?></td>
