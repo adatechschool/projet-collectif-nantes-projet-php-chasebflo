@@ -24,16 +24,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 
 try {
-    // Créer une nouvelle table
-    $pdo->exec("CREATE TABLE IF NOT EXISTS dechets_archives (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        id_original INT NOT NULL,
-        type_dechet VARCHAR(255),
-        quantite_kg VARCHAR(255),
-        role VARCHAR(100),
-        date_suppression DATETIME
-    )");
-
+  
     $pdo->exec("ALTER TABLE dechets_collectes
         DROP FOREIGN KEY collectes_ibfk_1,
         ADD FOREIGN KEY (id_benevole),
