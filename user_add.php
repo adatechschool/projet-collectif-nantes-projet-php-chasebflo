@@ -54,14 +54,14 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium">Mot de passe</label>
                     <input type="password" name="mot_de_passe"
-                           class="form-select w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950 hover:bg-green-500"
+                           class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950 hover:bg-green-500"
                            placeholder="Mot de passe" required>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium">Rôle</label>
                     <select name="role"
-                            class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
+                            class="appearance-none w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                         <option value="participant">Participant</option>
                         <option value="admin">Admin</option>
                     </select>
