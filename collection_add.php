@@ -108,23 +108,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <form method="POST" class="space-y-4">
                 <!-- Date -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Date :</label>
+                    <label class="block text-gray-700 font-medium">Date :</label>
                     <input type="date" name="date" required
-                           class="w-full p-2 border border-green-950 rounded-lg focus:ring-green-950 focus:border-green-950">
+                           class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                 </div>
 
                 <!-- Lieu -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Lieu :</label>
+                    <label class="block text-gray-700 font-medium">Lieu :</label>
                     <input type="text" name="lieu" required
-                           class="w-full p-2 border border-green-950 rounded-lg focus:ring-green-950 focus:border-green-950">
+                           class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                 </div>
 
                 <!-- Bénévole responsable -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Bénévole Responsable :</label>
+                    <label class="block text-gray-700 font-medium">Bénévole Responsable :</label>
                     <select name="benevole" required
-                            class="w-full p-2 border border-green-950 rounded-lg focus:ring-green-950 focus:border-green-950">
+                            class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                         <option value="">Sélectionner un bénévole</option>
                         <?php foreach ($benevoles as $benevole): ?>
                             <option value="<?= $benevole['id'] ?>" <?= $benevole['id'] ==  'selected' ?>>
@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                   <!-- Type de déchets -->
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium">Type de déchets</label>
+                    <label class="block text-gray-700 font-medium">Type de déchets :</label>
                     <select name="type_dechet"
                             class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                         <option value="papier">Papier</option>
@@ -151,9 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                    <!-- Quantité en kg -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Quantité en kg :</label>
+                    <label class="block text-gray-700 font-medium">Quantité en kg :</label>
                     <input type="float" name="quantite_kg" required
-                           class="w-full p-2 border border-green-950 rounded-lg focus:ring-green-950 focus:border-green-950">
+                           class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                 </div>
 
                 <!-- Boutons -->
