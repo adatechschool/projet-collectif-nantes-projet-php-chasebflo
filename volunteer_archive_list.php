@@ -1,18 +1,39 @@
 <?php
 require 'databaseconnect.php';
+try {
 
+    // Créer le trigger on clic de reactiver
+    $pdo->exec("DROP TRIGGER IF EXISTS archive_benevole_before_activate");
+    $pdo->exec("
+        CREATE TRIGGER archive_benevole_before_activate
+        BEFORE DELETE ON benevoles_archive
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO benevoles (id,nom,mot_de_passe, email, role)
+            VALUES (id_original, nom, email,mot_de_passe, role);
+        END
+    ");
+    
+    // Vérifier si la colonne benevole_archive existe dans la table collectes
+    $stmt = $pdo->prepare("SHOW COLUMNS FROM collectes LIKE 'benevole_archive'");
+    $stmt->execute();
+    if ($stmt->rowCount() === 0) {
+        $pdo->exec("ALTER TABLE collectes ADD COLUMN benevoles BOOLEAN DEFAULT FALSE");
+    }
+} catch(PDOException $e) {
+    error_log("Erreur configuration: " . $e->getMessage());
+}
 try {
     $stmt = $pdo->query("
         SELECT b.id, b.nom, b.email, b.role
-        FROM benevoles b
+        FROM benevoles_archive b
         ORDER BY b.nom ASC
     ");
 
-    $query = $pdo->prepare("SELECT * FROM benevoles ");
+    $query = $pdo->prepare("SELECT * FROM benevoles_archive ");
     $query->execute();
-    $benevoles = $stmt->fetchAll();
-    $admin = $query->fetch(PDO::FETCH_ASSOC);
-    $adminNom = $admin ? htmlspecialchars($admin['nom']) : 'Aucun administrateur trouvé';
+    $benevoles_archives = $stmt->fetchAll();
+
 
 } catch (PDOException $e) {
     echo "Erreur de base de données : " . $e->getMessage();
@@ -29,7 +50,7 @@ error_reporting(E_ALL);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Bénévoles</title>
+    <title>Liste des Bénévoles archivés</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
@@ -78,9 +99,9 @@ error_reporting(E_ALL);
                 <tr class="hover:bg-gray-100 transition duration-200">
                 <?php
 // Vérification s'il y a des données
-if ($benevoles) {
+if ($benevoles_archives) {
     // Boucle sur chaque bénévole
-    foreach ($benevoles as $benevole) {
+    foreach ($benevoles_archives as $benevole) {
         ?>
         <tr class="hover:bg-gray-100 transition duration-200">
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['nom']); ?></td>
@@ -88,13 +109,9 @@ if ($benevoles) {
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['role']); ?></td>
         
         <td class="py-3 px-4 flex space-x-2">
-                        <a href="volunteer_edit_2.php?id=<?= $benevole['id'] ?>"
+                        <a href="volunteer_archive_list.php?id=<?= $benevole['id'] ?>"
                            class="w-full bg-green-950 hover:bg-green-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                            ✏️ Modifier
-                        </a>
-                        <a href="volunteer_delete.php?id=<?= $benevole['id'] ?>"
-                           class="w-full bg-red-700 hover:bg-red-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">
-                            🗑️ Supprimer
+                            ✏️ Activer
                         </a>
                     </td>
                     </tr>
