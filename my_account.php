@@ -1,3 +1,11 @@
+<?php
+session_start();
+require 'config.php';
+
+$stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -49,9 +57,10 @@
 
         <form id="settings-form" class="space-y-6">
             <!-- Champ Email -->
+            
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" name="email" id="email" value="exemple@domaine.com" required
+                <input type="email" name="email" id="email" value="<?= $email?>" required
                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
             </div>
 
