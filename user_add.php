@@ -1,3 +1,9 @@
+<?php
+session_start();
+require 'role_middleware.php';
+checkRole('admin');
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

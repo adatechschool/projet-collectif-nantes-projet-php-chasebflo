@@ -1,5 +1,8 @@
 <?php
+session_start();
 require 'databaseconnect.php';
+require 'role_middleware.php';
+checkRole('admin');
 
 try {
     // Requête pour récupérer les collectes avec leurs déchets et bénévoles associés

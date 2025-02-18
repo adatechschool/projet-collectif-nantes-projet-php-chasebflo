@@ -1,5 +1,8 @@
 <?php
+session_start();
 require 'databaseconnect.php';
+require 'role_middleware.php';
+checkRole('admin');
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = (int) $_GET['id'];

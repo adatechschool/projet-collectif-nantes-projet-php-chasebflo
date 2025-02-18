@@ -1,5 +1,9 @@
 <?php
+session_start();
 require 'databaseconnect.php';
+require 'role_middleware.php';
+checkRole('admin');
+
 // Vérifier si un ID est fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: volunteer_list.php");
