@@ -3,7 +3,7 @@ require 'databaseconnect.php';
 
 try {
     $stmt = $pdo->query("
-        SELECT b.id, b.nom, b.email, b.role
+        SELECT b.id, b.nom, b.email, b.role, b.deleted_at
         FROM benevoles b
         ORDER BY b.nom ASC
     ");
@@ -75,46 +75,58 @@ error_reporting(E_ALL);
                     <th class="py-3 px-4 text-left">Nom</th>
                     <th class="py-3 px-4 text-left">Email</th>
                     <th class="py-3 px-4 text-left">Rôle</th>
+                    <th class="py-3 px-4 text-left">Actif/Inactif</th>
                     <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-300">
                 <tr class="hover:bg-gray-100 transition duration-200">
                 <?php
-// Vérification s'il y a des données
 if ($benevoles) {
-    // Boucle sur chaque bénévole
-    foreach ($benevoles as $benevole) {
-        ?>
+    foreach ($benevoles as $benevole) { ?>
         <tr class="hover:bg-gray-100 transition duration-200">
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['nom']); ?></td>
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['email']); ?></td>
             <td class="py-3 px-4"><?php echo htmlspecialchars($benevole['role']); ?></td>
-        
-        <td class="py-3 px-4 flex space-x-2">
-                        <a href="volunteer_edit_2.php?id=<?= $benevole['id'] ?>"
-                           class="w-full bg-green-950 hover:bg-green-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                            ✏️ Modifier
-                        </a>
-                        <a href="volunteer_delete.php?id=<?= $benevole['id'] ?>"
-                           class="w-full bg-red-700 hover:bg-red-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">
-                            🗑️ Supprimer
-                        </a>
-                    </td>
-                    </tr>
-        <?php
-    }
-}
-// Fermeture du curseur
+            
+            <!-- Affichage du statut -->
+            <td class="py-3 px-4">
+                <?php if ($benevole['deleted_at'] === null) { ?>
+                    <span class="w-full bg-green-950 hover:bg-green-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">Actif</span>
+                <?php } else { ?>
+                    <span class="w-full bg-red-700 hover:bg-red-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">Inactif</span>
+                <?php } ?>
+            </td>
+            
+            <td class="py-3 px-4 flex space-x-2">
+                <?php if ($benevole['deleted_at'] === null) { ?>
+                    <a href="volunteer_edit_2.php?id=<?= $benevole['id'] ?>"
+                       class="w-full bg-green-950 hover:bg-green-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                        ✏️ Modifier
+                    </a>
+                    <a href="volunteer_delete.php?id=<?= $benevole['id'] ?>"
+                       class="w-full bg-red-700 hover:bg-red-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">
+                        🗑️ Supprimer
+                    </a>
+                <?php } else { ?>
+                    <form method="POST" action="volunteer_restore.php">
+                        <input type="hidden" name="id" value="<?php echo $benevole['id']; ?>">
+                        <button type="submit" 
+                                class="w-full bg-blue-600 hover:bg-blue-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                            Réactiver
+                        </button>
+                    </form>
+                <?php } ?>
+            </td>
+        </tr>
+    <?php }
+} 
 $stmt->closeCursor();
-?>                
-                    
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+?>
+        </tbody>
+    </table>
+</div>
+</div>
 </div>
 </body>
 </html>
-
