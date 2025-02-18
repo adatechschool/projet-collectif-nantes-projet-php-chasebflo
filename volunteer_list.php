@@ -54,7 +54,8 @@ error_reporting(E_ALL);
                 <a href="volunteer_archive_list.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg">
                     <i class="fas fa-user-plus mr-3"></i> Bénévoles archivés
                 </a>
-            <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i
+            <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i>
+            <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:green-blue-700 rounded-lg"><i>
                             class="fas fa-cogs mr-3"></i> Mon compte</a></li>
                             <div class="mt-6">
     <a href="logout.php" class="block w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md text-center">

@@ -1,10 +1,31 @@
 <?php
+// Démarrer la session
 session_start();
-require 'config.php';
-
-$stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch();
+require 'databaseconnect.php';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+    $user_id = $_SESSION['user_id'];
+    // Vérifier que les mots de passe correspondent
+    if ($new_password === $confirm_password) {
+        if (strlen($new_password) >= 8) { // Vérifier que le mot de passe fait au moins 8 caractères
+            try {
+                // Hasher le nouveau mot de passe
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                // Mettre à jour le mot de passe dans la base de données
+                $stmt = $pdo->prepare("UPDATE benevoles SET mot_de_passe = ? WHERE id = ?");
+                $stmt->execute([$hashed_password, $user_id]);
+                $message = "Mot de passe mis à jour avec succès";
+            } catch(PDOException $e) {
+                $error = "Erreur lors de la mise à jour du mot de passe";
+            }
+        } else {
+            $error = "Le mot de passe doit faire au moins 8 caractères";
+        }
+    } else {
+        $error = "Les mots de passe ne correspondent pas";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -13,7 +34,9 @@ $stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un Bénévole</title>
+    <title>Ajouter un Bénévole</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
 

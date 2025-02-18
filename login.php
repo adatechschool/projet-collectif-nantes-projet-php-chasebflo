@@ -1,40 +1,34 @@
 <?php
 session_start();
 require 'config.php';
-
 // Si l'utilisateur est déjà connecté, rediriger vers collection_list.php
 if (isset($_SESSION["user_id"])) {
     header("Location: collection_list.php");
     exit;
 }
-
 // Initialisation des variables
 $error = '';
 $email = '';
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Nettoyage et validation des entrées
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"] ?? '';
-
     if (!empty($email) && !empty($password)) {
         try {
             // Vérifier si l'utilisateur existe dans la table `benevoles`
             $stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
             $stmt->execute([$email]);
             $user = $stmt->fetch();
-
             // Vérification du mot de passe
             if ($user && password_verify($password, $user['mot_de_passe'])) {
                 // Protection contre la fixation de session
                 session_regenerate_id(true);
-                
                 // Stockage des informations en session
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION["nom"] = $user["nom"];
                 $_SESSION["role"] = $user["role"];
+                $_SESSION["email"] = $user["email"];
                 $_SESSION["last_activity"] = time();
-
                 // Redirection
                 header("Location: collection_list.php");
                 exit;
@@ -66,49 +60,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="flex justify-center items-center min-h-screen">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
             <h1 class="text-3xl font-bold text-blue-900 mb-6 text-center">Connexion</h1>
-            
             <?php if (!empty($error)) : ?>
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                     <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
-
             <form method="POST" class="space-y-6" autocomplete="off">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        id="email" 
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
                         value="<?= htmlspecialchars($email) ?>"
-                        required 
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    >
+                        required
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                 </div>
-                
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        id="password" 
-                        required 
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    >
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                 </div>
-
                 <div class="flex justify-between items-center">
                     <a href="hash_password.php" class="text-sm text-blue-600 hover:underline">
                         Mot de passe oublié ?
                     </a>
-                    <div class="flex justify-between items-center">
                     <a href="user_add.php" class="text-sm text-blue-600 hover:underline">
                         Créer un compte
                     </a>
-                    <button 
-                        type="submit" 
-                        class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg shadow-md transition duration-200"
-                    >
+                    <button
+                        type="submit"
+                        class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg shadow-md transition duration-200">
                         Se connecter
                     </button>
                 </div>
