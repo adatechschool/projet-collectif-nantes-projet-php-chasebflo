@@ -101,20 +101,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="flex h-screen">
         <!-- Dashboard -->
-        <div class="bg-cyan-200 text-white w-64 p-6">
+
+        <div class="bg-green-950 text-white w-64 p-6">
             <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
 
-            <li><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-tachometer-alt mr-3"></i> Tableau de bord</a></li>
-            <li><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
+            <li><a href="collection_list.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i class="fas fa-tachometer-alt mr-3"></i> Tableau de bord</a></li>
+            <li><a href="volunteer_list.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i class="fa-solid fa-list mr-3"></i> Liste des bénévoles</a></li>
             <li>
-                <a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg">
+                <a href="user_add.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg">
                     <i class="fas fa-user-plus mr-3"></i> Ajouter un bénévole
                 </a>
             </li>
-            <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
+            <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
 
             <div class="mt-6">
-                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg shadow-md">
+                <button onclick="window.location.href='logout.php'" class="w-full bg-red-700 hover:bg-red-500 text-white py-2 rounded-lg shadow-md">
                     Déconnexion
                 </button>
             </div>
@@ -122,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Contenu principal -->
         <div class="flex-1 p-8 overflow-y-auto">
-            <h1 class="text-4xl font-bold text-blue-900 mb-6">Modifier une collecte</h1>
+            <h1 class="text-4xl font-bold text-green-950 mb-6">Modifier une collecte</h1>
 
             <!-- Formulaire -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
@@ -154,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium">Type de déchets</label>
                         <select name="type_dechet"
-                            class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="appearance-none w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                             <option value="papier">Papier</option>
                             <option value="metal">Métal</option>
                             <option value="plastique">Plastique</option>
@@ -174,9 +175,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                     <div class="flex justify-end space-x-4">
-                        <a href="collection_list.php" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Annuler</a>
-                        <button type="submit" class="bg-cyan-200 text-white px-4 py-2 rounded-lg">Modifier</button>
-                    </div>
+                    <a href="collection_list.php" class="bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 rounded-lg">Annuler</a>
+                    <button type="submit" class="bg-green-950 hover:bg-green-500 text-white px-4 py-2 rounded-lg">Modifier</button>
+                </div>
                 </form>
             </div>
         </div>
