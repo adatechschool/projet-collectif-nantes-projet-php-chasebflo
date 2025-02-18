@@ -115,10 +115,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <li><a href="my_account.php" class="flex items-center py-2 px-3 hover:bg-green-700 rounded-lg"><i class="fas fa-cogs mr-3"></i> Mon compte</a></li>
 
             <div class="mt-6">
-    <a href="logout.php" class="w-full bg-red-700 hover:bg-red-500 text-white py-2 rounded-lg shadow-md">
-        Déconnexion
-    </a>
-</div>
+                <button onclick="window.location.href='logout.php'" class="w-full bg-red-700 hover:bg-red-500 text-white py-2 rounded-lg shadow-md">
+                    Déconnexion
+                </button>
+            </div>
         </div>
 
         <!-- Contenu principal -->

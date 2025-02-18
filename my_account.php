@@ -94,6 +94,9 @@ $stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
                 <button type="button" onclick="updateSettings()"
                         class="bg-cyan-200 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg shadow-md">
                     Mettre à jour
+            <div class="mt-6">
+                <button onclick="window.location.href='logout.php'" class="w-full bg-red-700 hover:bg-red-500 text-white py-2 rounded-lg shadow-md">
+                    Déconnexion
                 </button>
             </div>
         </form>
