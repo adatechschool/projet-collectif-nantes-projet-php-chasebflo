@@ -4,12 +4,12 @@ require 'databaseconnect.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];
 
-    // Fonction pour restaurer un bénévole
+    // Fonction pour réactiver un bénévole
     function restoreBenevole($pdo, $id) {
         try {
             $stmt = $pdo->prepare("
                 UPDATE benevoles 
-                SET deleted_at = NULL 
+                SET deleted_at = NULL
                 WHERE id = :id
             ");
             $stmt->execute([':id' => $id]);
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     }
 
     if (restoreBenevole($pdo, $id)) {
-        // Rediriger vers la page précédente avec un message de succès
+        // rafraichir la page de la liste des benevoles
         header("Location: volunteer_list.php?success=1");
         exit;
     } else {
-        // Rediriger avec un message d'erreur
+        // rafraichir la page de la liste des benevoles
         header("Location: volunteer_list.php?error=1");
         exit;
     }
