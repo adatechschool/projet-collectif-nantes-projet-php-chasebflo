@@ -1,34 +1,64 @@
 <?php
 require 'databaseconnect.php';
+try {
+    $pdo->exec("DROP TRIGGER IF EXISTS archive_benevole_before_delete");
+    $pdo->exec("
+        CREATE TRIGGER archive_benevole_before_delete
+        BEFORE DELETE ON benevoles
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO benevoles_archive (id_original, nom, email, role, date_suppression)
+            VALUES (OLD.id, OLD.nom, OLD.email, OLD.role, NOW());
+        END
+    ");
+} catch(PDOException $e) {
+    error_log("Erreur création trigger: " . $e->getMessage());
+}
+
+try {
+    // Vérifier si la colonne existe déjà
+    $stmt = $pdo->prepare("SHOW COLUMNS FROM collectes LIKE 'benevole_archive'");
+    $stmt->execute();
+    if ($stmt->rowCount() === 0) {
+        // Si la colonne n'existe pas, on la crée
+        $pdo->exec("ALTER TABLE collectes ADD COLUMN benevole_archive BOOLEAN DEFAULT FALSE");
+    }
+} catch(PDOException $e) {
+    error_log("Erreur création colonne: " . $e->getMessage());
+}
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = (int) $_GET['id'];
-
     try {
-        // $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password,[
-        //     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        // ]);
-
+        $pdo->beginTransaction();
+        
+        // Mettre à jour les collectes
+        $stmt = $pdo->prepare("
+            UPDATE collectes
+            SET benevole_archive = TRUE
+            WHERE id_benevole = :id
+        ");
+        $stmt->execute([':id' => $id]);
+        
+        // Supprimer le bénévole (le trigger s'occupera de l'archivage)
         $stmt = $pdo->prepare("DELETE FROM benevoles WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-            header("Location: volunteer_list.php?success=1");
-            exit();
-        } else {
-            echo "Erreur lors de la suppression.";
-        }
+        $stmt->execute([':id' => $id]);
+        
+        $pdo->commit();
+        header("Location: volunteer_list.php?success=1");
+        exit();
+       
     } catch (PDOException $e) {
+        $pdo->rollBack();
         die("Erreur: " . $e->getMessage());
     }
 } else {
     echo "ID invalide.";
 }
 
-
 try {
     // Créer une nouvelle table
-    $pdo->exec("CREATE TABLE IF NOT EXISTS benevoles_archives (
+    $pdo->exec("CREATE TABLE IF NOT EXISTS benevoles_archive (
         id INT AUTO_INCREMENT PRIMARY KEY,
         id_original INT NOT NULL,
         nom VARCHAR(255),
@@ -68,7 +98,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         if ($benevole) {
             // 2. Copier les données dans la table d'archive
             $stmt = $pdo->prepare("
-                INSERT INTO benevoles_archives (id_original, nom, email, role, date_suppression)
+                INSERT INTO benevoles_archive (id_original, nom, email, role, date_suppression)
                 VALUES (:id, :nom, :email, :role, NOW())
             ");
             $stmt->execute([

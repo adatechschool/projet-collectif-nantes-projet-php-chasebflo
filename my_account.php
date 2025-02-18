@@ -1,3 +1,11 @@
+<?php
+session_start();
+require 'config.php';
+
+$stmt = $pdo->prepare("SELECT * FROM benevoles WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
