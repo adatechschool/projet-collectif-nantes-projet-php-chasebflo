@@ -1,3 +1,37 @@
+<?php
+// Démarrer la session
+session_start();
+require 'databaseconnect.php';
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+    $user_id = $_SESSION['user_id'];
+
+    // Vérifier que les mots de passe correspondent
+    if ($new_password === $confirm_password) {
+        if (strlen($new_password) >= 8) { // Vérifier que le mot de passe fait au moins 8 caractères
+            try {
+                // Hasher le nouveau mot de passe
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                
+                // Mettre à jour le mot de passe dans la base de données
+                $stmt = $pdo->prepare("UPDATE benevoles SET mot_de_passe = ? WHERE id = ?");
+                $stmt->execute([$hashed_password, $user_id]);
+                
+                $message = "Mot de passe mis à jour avec succès";
+            } catch(PDOException $e) {
+                $error = "Erreur lors de la mise à jour du mot de passe";
+            }
+        } else {
+            $error = "Le mot de passe doit faire au moins 8 caractères";
+        }
+    } else {
+        $error = "Les mots de passe ne correspondent pas";
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -47,19 +81,11 @@
                 Le mot de passe actuel est incorrect.
             </div>
 
-            <form id="settings-form" class="space-y-6">
+            <form id="settings-form" class="space-y-6" method="POST">
                 <!-- Champ Email -->
                 <div>
                     <label for="email" class="block text-gray-700 font-medium">Email</label>
-                    <input type="email" name="email" id="email" value="exemple@domaine.com" required
-                        class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
-                </div>
-
-                <!-- Champ Mot de passe actuel -->
-                <div>
-                    <label for="current_password" class="block text-gray-700 font-medium">Mot de passe
-                        actuel</label>
-                    <input type="password" name="current_password" id="current_password" required
+                    <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($_SESSION['email']);?>" required DISABLED
                         class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                 </div>
 
@@ -78,11 +104,23 @@
                         class="w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                 </div>
 
+                <?php if (isset($error)): ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <?php echo htmlspecialchars($error); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($message)): ?>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php endif; ?>
+
                 <!-- Boutons -->
                 <div class="flex justify-between items-center">
                     <a href="collection_list.php" class="font-medium text-green-950 hover:underline">Retour à la liste des
                         collectes</a>
-                    <button type="button" onclick="updateSettings()"
+                    <button type="submit"
                         class="bg-green-950 hover:bg-green-500 text-white px-6 py-2 rounded-lg shadow-md">
                         Mettre à jour
                     </button>
