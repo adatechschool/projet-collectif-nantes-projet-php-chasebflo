@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium">Type de déchets</label>
                         <select name="type_dechet"
-                            class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="appearance-none w-full mt-2 p-3 border border-green-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-950">
                             <option value="papier">Papier</option>
                             <option value="metal">Métal</option>
                             <option value="plastique">Plastique</option>

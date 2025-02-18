@@ -1,5 +1,20 @@
-# Projet_Collectif_Template
+## Projet Collectif 
+# Back-office pour l'association de collecte des déchets du littoral
 
-Ce dépôt Git vous sert de base de travail pour les projets collectifs : en cliquant sur le lien fourni par l'encadrante, celui-ci sera automatiquement copié dans la dépôt que vous créerez pour ce projet.
+Equipe : Sébastien, Charlène, Florence
 
-Il ne vous reste plus qu'à vous lancer sur le projet collectif, et à mettre à jour le dépôt au fil de l'eau !
+## Contexte, objectif, outils
+**Contexte** : semaines 18 et 19 de la formation Ada Tech School - Concepteur développeur d'application | 2024-2026  
+**Objectif** : réaliser une application utilisable par une association de collecte de déchets.   
+Avec les langages html, sql et php, cette application permet de recenser les collectes de déchets par lieu, par bénévole, par date.  
+**Outils** : WAMP server, phpMyAdmin, VS Code, Git, drawSQL
+
+## Ressources
+
+![Schéma des bases de données](/schema_bdd.png "Schéma des bases de données")  
+
+
+
+
+
+
