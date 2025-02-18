@@ -10,7 +10,10 @@ Avec les langages html, sql et php, cette application permet de recenser les col
 **Outils** : WAMP server, phpMyAdmin, VS Code, Git, drawSQL
 
 ## Ressources
-**Schéma des bases de données**  
+
+![Schéma des bases de données](/schema_bdd.png "Schéma des bases de données")  
+
+
 
 
 
