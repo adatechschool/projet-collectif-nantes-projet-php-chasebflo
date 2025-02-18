@@ -110,7 +110,7 @@ if ($benevoles) {
                     <form method="POST" action="volunteer_restore.php">
                         <input type="hidden" name="id" value="<?php echo $benevole['id']; ?>">
                         <button type="submit" 
-                                class="w-full bg-blue-600 hover:bg-blue-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                                class="w-full bg-blue-950 hover:bg-green-500 text-white text-center px-4 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                             Réactiver
                         </button>
                     </form>
