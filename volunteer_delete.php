@@ -1,5 +1,9 @@
 <?php
+session_start();
 require 'databaseconnect.php';
+require 'role_middleware.php';
+checkRole('admin');
+
 try {
     $pdo->exec("DROP TRIGGER IF EXISTS archive_benevole_before_delete");
     $pdo->exec("

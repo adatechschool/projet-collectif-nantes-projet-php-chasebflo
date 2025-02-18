@@ -102,10 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <a href="hash_password.php" class="text-sm text-blue-600 hover:underline">
                         Mot de passe oublié ?
                     </a>
-
-                    <a href="user_add.php" class="text-sm text-blue-600 hover:underline">
-                        Créer un compte
-                    </a>
                     <button
                         type="submit"
                         class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg shadow-md transition duration-200">
