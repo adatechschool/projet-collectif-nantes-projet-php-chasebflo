@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'databaseconnect.php';
+require 'session_check.php';
 require 'role_middleware.php';
 checkRole('admin');
 
@@ -126,7 +127,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Contenu principal -->
         <div class="flex-1 p-8 overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
             <h1 class="text-4xl font-bold text-green-950 mb-6">Modifier une collecte</h1>
+            <div class="text-lg text-gray-800">Bienvenue, <?= $_SESSION["nom"] ?> !</div>
+        </div>
 
             <!-- Formulaire -->
             <div class="bg-white p-6 rounded-lg shadow-lg">

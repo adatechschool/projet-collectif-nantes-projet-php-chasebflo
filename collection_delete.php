@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'databaseconnect.php';
+require 'session_check.php';
 require 'role_middleware.php';
 checkRole('admin');
 

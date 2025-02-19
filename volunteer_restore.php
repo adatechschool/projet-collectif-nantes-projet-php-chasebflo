@@ -1,5 +1,8 @@
 <?php
-require 'databaseconnect.php'; 
+require 'databaseconnect.php';
+require 'session_check.php';
+require 'role_middleware.php';
+checkRole('admin'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'session_check.php';
 require 'role_middleware.php';
 checkRole('admin');
 ?>
@@ -13,7 +14,7 @@ checkRole('admin');
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-green-100 text-gray-900">
 
 <div class="flex h-screen">
     <!-- Barre de navigation -->
@@ -38,7 +39,11 @@ checkRole('admin');
 
     <!-- Contenu principal -->
     <div class="flex-1 p-8 overflow-y-auto">
-        <h1 class="text-4xl font-bold text-green-950 mb-6">Ajouter un Bénévole</h1>
+         <!-- Titre et nom de l'utilisateur --> 
+         <div class="flex items-center justify-between mb-6">
+         <h1 class="text-4xl font-bold text-green-950 mb-6">Ajouter un Bénévole</h1>
+            <div class="text-lg text-gray-800">Bienvenue, <?= $_SESSION["nom"] ?> !</div>
+        </div>
 
         <!-- Formulaire d'ajout -->
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">

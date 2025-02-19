@@ -1,6 +1,9 @@
 <?php
 session_start();
 require 'databaseconnect.php';
+require 'session_check.php';
+
+
 
 try {
     $stmt = $pdo->query("
@@ -57,8 +60,11 @@ error_reporting(E_ALL);
 
     <!-- Contenu principal -->
     <div class="flex-1 p-8 overflow-y-auto">
-        <!-- Titre -->
-        <h1 class="text-4xl font-bold text-white mb-6">Liste des Collectes de Déchets</h1>
+        <!-- Titre et nom de l'utilisateur --> 
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-4xl font-bold text-white">Liste des Collectes de Déchets</h1>
+            <div class="text-lg text-white">Bienvenue, <?= $_SESSION["nom"] ?> !</div>
+        </div>
 
         <!-- Message de notification (ex: succès de suppression ou ajout) -->
         <?php if (isset($_GET['message'])): ?>
