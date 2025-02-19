@@ -26,24 +26,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // Vérification du mot de passe
             if ($user && password_verify($password, $user['mot_de_passe'])) {
-                // Protection contre la fixation de session
-                session_regenerate_id(true);
 
-                // Stockage des informations en session
-                $_SESSION["user_id"] = $user["id"];
-                $_SESSION["nom"] = $user["nom"];
-                $_SESSION["role"] = $user["role"];
-                $_SESSION["email"] = $user["email"];
-                $_SESSION["last_activity"] = time();
+                   // Vérification si le compte est actif
+    if ($user['deleted_at'] !== NULL) {
+        $error = "Ce compte utilisateur n'est pas actif.";
+        sleep(1);
+    } else {
+                 // Protection contre la fixation de session
+        session_regenerate_id(true);
 
-                // Redirection
-                header("Location: collection_list.php");
-                exit;
-            } else {
-                $error = "Identifiants incorrects";
-                // Délai pour prévenir le brute force
-                sleep(1);
-            }
+        // Stockage des informations en session
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["nom"] = $user["nom"];
+        $_SESSION["role"] = $user["role"];
+        $_SESSION["email"] = $user["email"];
+        $_SESSION["last_activity"] = time();
+
+        // Redirection
+        header("Location: collection_list.php");
+        exit;
+    }
+} else {
+    $error = "Identifiants incorrects";
+    // Délai pour prévenir le brute force
+    sleep(1);
+}
         } catch (PDOException $e) {
             // Log l'erreur de manière sécurisée
             error_log("Erreur de connexion : " . $e->getMessage());
