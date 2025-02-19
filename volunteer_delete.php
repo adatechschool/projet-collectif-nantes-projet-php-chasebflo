@@ -5,32 +5,6 @@ require 'session_check.php';
 require 'role_middleware.php';
 checkRole('admin');
 
-try {
-    $pdo->exec("DROP TRIGGER IF EXISTS archive_benevole_before_delete");
-    $pdo->exec("
-        CREATE TRIGGER archive_benevole_before_delete
-        BEFORE DELETE ON benevoles
-        FOR EACH ROW
-        BEGIN
-            INSERT INTO benevoles_archive (id_original, nom, email, role, date_suppression)
-            VALUES (OLD.id, OLD.nom, OLD.email, OLD.role, NOW());
-        END
-    ");
-} catch(PDOException $e) {
-    error_log("Erreur création trigger: " . $e->getMessage());
-}
-
-try {
-    // Vérifier si la colonne existe déjà
-    $stmt = $pdo->prepare("SHOW COLUMNS FROM collectes LIKE 'benevole_archive'");
-    $stmt->execute();
-    if ($stmt->rowCount() === 0) {
-        // Si la colonne n'existe pas, on la crée
-        $pdo->exec("ALTER TABLE collectes ADD COLUMN benevole_archive BOOLEAN DEFAULT FALSE");
-    }
-} catch(PDOException $e) {
-    error_log("Erreur création colonne: " . $e->getMessage());
-}
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = (int) $_GET['id'];
